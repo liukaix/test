@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            parallel {
+                stage("update backend") {
+                    steps {
+                      dir('backend'){
+                           git branch: 'master_hotfix', credentialsId: '87a087ce-a0aa-4c63-a0b3-4423308b4fda', url: 'https://github.com/liukaix/test.git'
+                           sh("git fetch")
+                           sh("git checkout -b master_hotfix origin/master_hotfix")
+                           sh("git checkout -b dev origin/dev")
+                           sh("git rebase -m master_hotfix")
+                           sh("git push -f")
+                       }
+                    }
+                }
+            }
+        }
+    }
+}
+
